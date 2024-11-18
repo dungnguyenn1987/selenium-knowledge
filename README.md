@@ -1,11 +1,27 @@
 # Selenium Overview
-Selenium is an umbrella project for a range of tools and libraries that enable and support the automation of web browsers. 
-It provides extensions to emulate user interaction with browsers, a distribution server for scaling browser allocation
+<details>
+
+## Definition
+Selenium is an umbrella project for a range of tools and libraries that enable and support the automation of web browsers. It provides extensions to emulate user interaction with browsers, a distribution server for scaling browser allocation
   1. **WebDriver**: uses browser automation APIs provided by browser vendors to control the browser and run tests
   2. **IDE (Integrated Development Environment)**: is Chrome and Firefox extension and is generally the most efficient way to develop test cases by recording the users’ actions in the browser for you, using existing Selenium commands, with parameters defined by the context of that element. 
   2. **Grid**: run test cases in different machines across different platforms
 
+![image](https://github.com/user-attachments/assets/7ae2ec01-d4e5-4b22-88bd-17075d8f6243)
+
+## Advantages
+
+![image](https://github.com/user-attachments/assets/6fc43f70-48f3-4fb7-aa4c-c9b2fe378b15)
+
+</details>
+
 # Selenium Webdriver
+<details>
+  <summary>Multi-Browser Compatibility</summary>
+
+![image](https://github.com/user-attachments/assets/0813d356-9769-4e29-9d96-9dc6b7724201)
+
+</details>
 <details>
   <summary>How it works</summary>
 
@@ -39,6 +55,8 @@ Poll the application for a specific condition to evaluate as true before it exit
 </details>
 
 # Test Framework/Runner
+<details>
+  
 WebDriver **only** communicate with the browser via any of the methods above. We need frameworks/runner come into play for extra works or additional features like:
 * Assertions 
 * Reporting 
@@ -55,6 +73,19 @@ Test framework should matches the language bindings, e.g.,
 The test framework is responsible for running and executing your WebDriver and related steps in your tests.
 
 ![image](https://github.com/user-attachments/assets/98cbe643-611d-4fec-97fb-13bec24e7090)
+
+</details>
+
+# Page Object Model (POM)
+<details>
+  
+* a design pattern or a framework that we use in Selenium using which one can create an object repository of the different web elements across the application. By this way, the code becomes easy to maintain and reduces code duplicity
+* In the Page Object Model framework, we create a class file for each web page. This class file consists of different web elements present on the web page
+* Test scripts then use these elements to perform different actions
+
+![image](https://github.com/user-attachments/assets/a921bc62-cac6-4144-9c63-827cab3fe7b6)
+
+</details>
 
 # Common Errors
 <details>
@@ -113,6 +144,8 @@ Sometimes the session you’re trying to access is different than what’s curre
 </details>
 
 # Locators
+<details>
+  
 ## Traditional Locators
 ![image](https://github.com/user-attachments/assets/a7af2313-8a81-47b2-b8a2-b503b4229e3e)
 ## Utilizing Locators
@@ -140,10 +173,11 @@ By submitLocator = RelativeLocator.with(By.tagName("button")).toRightOf(By.id("c
 By emailLocator = RelativeLocator.with(By.tagName("input")).near(By.id("lbl-email"));
 By submitLocator = RelativeLocator.with(By.tagName("button")).below(By.id("email")).toRightOf(By.id("cancel"));
   ```
-
 ## Evaluating the Shadow DOM
 ```c#
 WebElement shadowHost = driver.findElement(By.cssSelector("#shadow_host"));
 SearchContext shadowRoot = shadowHost.getShadowRoot();
 WebElement shadowContent = shadowRoot.findElement(By.cssSelector("#shadow_content"));
 ```
+
+</details>
