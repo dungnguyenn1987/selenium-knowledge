@@ -32,6 +32,9 @@ WebDriver talks to a browser through a driver. Communication is two-way: WebDriv
 </details>
 <details>
   <summary>Wait Strategy</summary>
+  
+  ## Fixed waits
+Adding a `sleep` statement to pause the code execution for a set period of time. Because the code can’t know exactly how long it needs to wait, this can fail when it doesn’t sleep long enough. Alternately, if the value is set too high and a sleep statement is added in every place it is needed, the duration of the session can become prohibitive.  
 
   ## Implicit waits
 Set as global setting for every element  location call for the entire session with the timeouts capability in the browser options, or with a driver method
@@ -178,6 +181,169 @@ By submitLocator = RelativeLocator.with(By.tagName("button")).below(By.id("email
 WebElement shadowHost = driver.findElement(By.cssSelector("#shadow_host"));
 SearchContext shadowRoot = shadowHost.getShadowRoot();
 WebElement shadowContent = shadowRoot.findElement(By.cssSelector("#shadow_content"));
+```
+
+</details>
+
+# Working with windows and tabs
+<details>
+
+```
+//Store the ID of the original window
+string originalWindow = BrowserFactory.GetWebDriver().CurrentWindowHandle;
+
+//Wait for the new window or tab
+var wait = new WebDriverWait(BrowserFactory.GetWebDriver(), TimeSpan.FromSeconds(45));
+wait.Until(wd => wd.WindowHandles.Count == noOfCurrentWindows + 1);
+
+//Loop through until we find a new window handle
+foreach (string window in BrowserFactory.GetWebDriver().WindowHandles)
+{
+    if (originalWindow != window)
+    {
+        BrowserFactory.GetWebDriver().SwitchTo().Window(window);
+        return window;
+    }
+}
+
+//Opens a new tab and switches to new tab
+driver.switchTo().newWindow(WindowType.TAB);
+
+//Opens a new window and switches to new window
+driver.switchTo().newWindow(WindowType.WINDOW);
+```
+</details>
+
+# findElement vs findElements
+<details>
+
+**findElement**
+- returns First matching element in the DOM that matches with the provided locator
+- returns a reference of element. This value can be stored and used for future element actions
+- throw ElementNotFound exception in case of not finding any element matches
+
+**findElements**
+- returns All matching elements
+- returns a collection of element references
+- NOT throw any exception. If there are no matches, an empty list is returned
+
+</details>
+
+# TOP 5 Test Automation Framework Design Patterns
+<details>
+
+1. Page Object Model (POM) Pattern
+The Page Object Model (POM) is one of the most widely used design patterns for structuring automation test code. It promotes the separation of UI locators and test logic, making tests more readable and maintainable. The POM represents application pages as classes, with UI elements defined as variables within those classes.
+
+```
+public class LoginPage {
+
+    @FindBy(id = "usernameField")
+    private WebElement usernameField;
+
+    @FindBy(id = "passwordField")
+    private WebElement passwordField;
+
+    @FindBy(id = "loginButton")
+    private WebElement loginButton;
+
+    public LoginPage(AppiumDriver driver) {
+        PageFactory.initElements(driver, this);
+    }
+
+    public void setUsername(String username) {
+        usernameField.sendKeys(username);
+    }
+
+    public void setPassword(String password) {
+        passwordField.sendKeys(password);
+    }
+
+    public void clickLoginButton() {
+        loginButton.click();
+    }
+}
+```
+
+2. Singleton Pattern
+The Singleton pattern ensures that only one instance of a class exists during the application's lifecycle. This pattern is useful when you need to maintain a single instance of objects like the WebDriver, ensuring consistency and preventing resource wastage. 
+
+```
+public class SingletonDriver 
+
+    private static WebDriver driver;
+
+    private SingletonDriver() {
+        // Private constructor to prevent instantiation
+    }
+
+    public static WebDriver getDriver() {
+        if (driver == null) {
+            driver = new ChromeDriver(); // Or any other WebDriver initialization
+        }
+        return driver;
+    }
+}
+```
+
+3. Factory Pattern
+The Factory pattern is used to create objects of related classes without specifying their exact class type. In test automation, it's beneficial when dealing with different platforms (e.g., Android, iOS).
+
+```
+public class WebDriverFactory 
+
+    public static WebDriver createDriver(String browserType) {
+        if ("chrome".equalsIgnoreCase(browserType)) {
+            return new ChromeDriver();
+        } else if ("firefox".equalsIgnoreCase(browserType)) {
+            return new FirefoxDriver();
+        }
+        throw new IllegalArgumentException("Unsupported browser type");
+    }
+}
+```
+
+4. Data-Driven Testing
+Data-Driven Testing allows running the same test with multiple sets of data. It's particularly useful for testing various scenarios without writing redundant code. In Java, TestNG's DataProvider annotation facilitates data-driven testing
+
+```
+import org.testng.annotations.DataProvider
+import org.testng.annotations.Test;
+
+public class DataDrivenTests {
+
+    @DataProvider(name = "loginData")
+    public Object[][] getLoginData() {
+        return new Object[][]{
+                {"user1", "pass1"},
+                {"user2", "pass2"},
+                // Add more test data
+        };
+    }
+
+    @Test(dataProvider = "loginData")
+    public void testLogin(String username, String password) {
+        // Perform login test using the provided data
+    }
+}
+```
+
+5. Fluent Interface Pattern
+The Fluent Interface pattern creates a chain of method calls, making the test code more readable and expressive. It's suitable for implementing actions involving multiple steps.
+
+```
+public class FluentExample 
+
+    public void performActions(WebDriver driver) {
+        new LoginPage(driver)
+                .setUsername("user1")
+                .setPassword("pass1")
+                .clickLoginButton()
+                .navigateToDashboard()
+                .performSomeAction()
+                .logout();
+    }
+}
 ```
 
 </details>
