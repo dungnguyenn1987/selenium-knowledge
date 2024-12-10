@@ -38,22 +38,34 @@ Adding a `sleep` statement to pause the code execution for a set period of time.
 
   ## Implicit waits
 Set as global setting for every element  location call for the entire session with the timeouts capability in the browser options, or with a driver method
-  ```c#
-   driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
+  ```
+ driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
   ```
   ## Explicit waits
 Poll the application for a specific condition to evaluate as true before it exits the loop and continues to the next command in the code, specify the exact condition to wait for in each place it is needed
-  ```c#
-  WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(2))
-   {
-         PollingInterval = TimeSpan.FromMilliseconds(300),
-   };
-   wait.IgnoreExceptionTypes(typeof(ElementNotInteractableException));
+  ```
+Wait<WebDriver> wait = new WebDriverWait(driver, Duration.ofSeconds(2));
+wait.until(d -> revealed.isDisplayed());
+  ```
+  ## Customization
+The Wait class can be instantiated with various parameters that will change how the conditions are evaluated.
+- Changing how often the code is evaluated (polling interval)
+- Specifying which exceptions should be handled automatically
+- Changing the total timeout length
+- Customizing the timeout message
 
-   wait.Until(d => {
-        revealed.SendKeys("Displayed");
-        return true;
-   });
+  ```
+  Wait<WebDriver> wait =
+        new FluentWait<>(driver)
+            .withTimeout(Duration.ofSeconds(2))
+            .pollingEvery(Duration.ofMillis(300))
+            .ignoring(ElementNotInteractableException.class);
+
+    wait.until(
+        d -> {
+          revealed.sendKeys("Displayed");
+          return true;
+        });
   ```
 </details>
 
@@ -76,17 +88,6 @@ Test framework should matches the language bindings, e.g.,
 The test framework is responsible for running and executing your WebDriver and related steps in your tests.
 
 ![image](https://github.com/user-attachments/assets/98cbe643-611d-4fec-97fb-13bec24e7090)
-
-</details>
-
-# Page Object Model (POM)
-<details>
-  
-* a design pattern or a framework that we use in Selenium using which one can create an object repository of the different web elements across the application. By this way, the code becomes easy to maintain and reduces code duplicity
-* In the Page Object Model framework, we create a class file for each web page. This class file consists of different web elements present on the web page
-* Test scripts then use these elements to perform different actions
-
-![image](https://github.com/user-attachments/assets/a921bc62-cac6-4144-9c63-827cab3fe7b6)
 
 </details>
 
@@ -233,7 +234,10 @@ driver.switchTo().newWindow(WindowType.WINDOW);
 <details>
 
 1. Page Object Model (POM) Pattern
+
 The Page Object Model (POM) is one of the most widely used design patterns for structuring automation test code. It promotes the separation of UI locators and test logic, making tests more readable and maintainable. The POM represents application pages as classes, with UI elements defined as variables within those classes.
+
+![image](https://github.com/user-attachments/assets/a921bc62-cac6-4144-9c63-827cab3fe7b6)
 
 ```
 public class LoginPage {
@@ -266,6 +270,7 @@ public class LoginPage {
 ```
 
 2. Singleton Pattern
+
 The Singleton pattern ensures that only one instance of a class exists during the application's lifecycle. This pattern is useful when you need to maintain a single instance of objects like the WebDriver, ensuring consistency and preventing resource wastage. 
 
 ```
@@ -287,6 +292,7 @@ public class SingletonDriver
 ```
 
 3. Factory Pattern
+
 The Factory pattern is used to create objects of related classes without specifying their exact class type. In test automation, it's beneficial when dealing with different platforms (e.g., Android, iOS).
 
 ```
@@ -304,6 +310,7 @@ public class WebDriverFactory
 ```
 
 4. Data-Driven Testing
+
 Data-Driven Testing allows running the same test with multiple sets of data. It's particularly useful for testing various scenarios without writing redundant code. In Java, TestNG's DataProvider annotation facilitates data-driven testing
 
 ```
@@ -329,6 +336,7 @@ public class DataDrivenTests {
 ```
 
 5. Fluent Interface Pattern
+
 The Fluent Interface pattern creates a chain of method calls, making the test code more readable and expressive. It's suitable for implementing actions involving multiple steps.
 
 ```
