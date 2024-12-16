@@ -184,6 +184,13 @@ SearchContext shadowRoot = shadowHost.getShadowRoot();
 WebElement shadowContent = shadowRoot.findElement(By.cssSelector("#shadow_content"));
 ```
 
+## Xpath vs CssSelector
+- Xpath is bidirectional, which implies that you can traverse from parent element to child and vice versa. CssSelector is unidirectional, implying that you can traverse only from parent to child elements.
+- Xpath can select elements, attributes, and text nodes. CssSelector Can’t directly select text node
+- XPath support Axes Methods to search and locate multiple nodes from the current node context. e.g: child, parent, ancestor, Preceding, sibling..
+- Xpath uses numerous operators to search for elements based on complex queries and comes with several built-in functions (such as contains(), text(), count()) and operators (such as +, -, |). . For instance, in the above example, using //car[price > 5 million] will filter out all the <car> elements that have a price value of more than 5 million.
+- Xpath is Slower than CSS selector
+
 </details>
 
 # Working with windows and tabs
