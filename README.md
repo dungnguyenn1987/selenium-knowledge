@@ -214,6 +214,14 @@ foreach (string window in BrowserFactory.GetWebDriver().WindowHandles)
     }
 }
 
+//switch To IFrame using Web Element
+WebElement iframe = driver.findElement(By.id("iframe1"));
+//Switch to the frame
+driver.switchTo().frame(iframe);
+
+//back to main content
+driver.switchTo().defaultContent();
+
 //Opens a new tab and switches to new tab
 driver.switchTo().newWindow(WindowType.TAB);
 
