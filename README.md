@@ -370,3 +370,11 @@ public class FluentExample
 ```
 
 </details>
+
+6. Facade design pattern 
+
+Use of a simple interface to implement complex/lengthy code. When implemented in automation, we design a facade class which implements methods that combine actions which are executed on different pages using a page object model.
+
+Let’s talk about Online shopping. As a customer, when I try to buy an item , I need to go through multiple pages to enter shipping address, billing address, payment information, review order & finally place order etc. As a customer, the only thing I see my order is getting placed with saved address and payment info and that is a Facade to me.
+
+</details>
