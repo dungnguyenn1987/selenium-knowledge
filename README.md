@@ -116,8 +116,12 @@ An element goes stale when it was previously located, but can not be currently a
 
   ## Possible Solutions
   * The DOM has changed
-    * Always relocate the element every time you go to use it
+    * Refresh page
+    * Explicit wait with ignore StaleElementReferenceException
+      * Wait until the element is present.
+      * Wait until the element is refreshed.
     * If it is stale, exception can be caught, the element relocated with the stored locator, and the method re-tried
+    * @FindBy annotation to locate an element in PageFactory. It helps to update the reference of the web element each time before any action is performed on it.
   * The Context has changed
     * if you move to a different context — like a different window or a different frame or iframe — , you need to make sure to switch back to the correct context before using the element.
   * The Page has changed
@@ -134,6 +138,7 @@ Try to click an element, but the click would instead be received by a different 
   ## Possible Solutions
   * Use Explicit Waits: `ExpectedCondition.ToBeClickable()` with `WebDriverWait`
   * Scroll the Element into View: `WebDriver.executeScript('window.scrollBy(0,-250)')` or `Actions.moveToElement(element)`
+  * Click using javascript
 </details>
 <details>
   <summary>InvalidSessionIdException</summary>
@@ -183,6 +188,9 @@ WebElement shadowHost = driver.findElement(By.cssSelector("#shadow_host"));
 SearchContext shadowRoot = shadowHost.getShadowRoot();
 WebElement shadowContent = shadowRoot.findElement(By.cssSelector("#shadow_content"));
 ```
+Validate shadow locator on browser console
+
+![image](https://github.com/user-attachments/assets/68e8cfac-4675-4047-bb5a-51dfc4e09c33)
 
 ## Xpath vs CssSelector
 - Xpath is bidirectional, which implies that you can traverse from parent element to child and vice versa. CssSelector is unidirectional, implying that you can traverse only from parent to child elements.
@@ -368,8 +376,6 @@ public class FluentExample
     }
 }
 ```
-
-</details>
 
 6. Facade design pattern 
 
